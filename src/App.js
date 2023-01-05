@@ -4,9 +4,8 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 function App() {
   const [src, setSrc] = useState(null);
-  const [crop, setCrop] = useState({ aspect: 16 / 9 });
+  const [crop, setCrop] = useState(null);
   const [image, setImage] = useState(null);
-  const [output, setOutput] = useState(null);
 
   const selectImage = (file) => {
     setSrc(URL.createObjectURL(file));
@@ -40,7 +39,7 @@ function App() {
 
     // Converting to base64
     const base64Image = canvas.toDataURL('image/png');
-    setOutput(base64Image);
+    setImage(base64Image);
     canvas.toBlob(
       blob => {
         if (!blob) {
@@ -57,6 +56,7 @@ function App() {
       "image/png",
       1
     )
+    setCrop(null);
   };
 
   return (
@@ -80,7 +80,9 @@ function App() {
               >
                 <img
                   alt="for_crop"
-                  onLoad={(e) => setImage(e.target)}
+                  onLoad={(e) => {
+                    setImage(e.target)
+                  }}
                   src={src}
                 />
               </ReactCrop>
@@ -91,7 +93,6 @@ function App() {
             </div>
           )}
         </div>
-        <div>{output && <img src={output} alt="img2" />}</div>
       </center>
     </div>
   );
